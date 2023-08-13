@@ -1,0 +1,1 @@
+export {MovieProvider,useMovieData} from "./movieContext"
