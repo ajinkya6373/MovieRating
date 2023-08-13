@@ -56,6 +56,8 @@ export default function HomePage() {
     return searchMatch && genreMatch && yearMatch && ratingMatch;
   });
 
+  const allGenres = [...new Set(allMovies.flatMap((movie) => movie.genre))];
+
   return (
     <div>
       <Navbar setSearchTerm={setSearchTerm} />
@@ -65,10 +67,12 @@ export default function HomePage() {
           className="p-2 border border-gray-300 rounded-md"
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
-          <option value={"All"}>All genre</option>
-          <option value={"Adventure"}>Adventure</option>
-          <option value={"Drama"}>Drama</option>
-          <option value={"Fantasy"}>Fantasy</option>
+          <option value={""}>All genre</option>
+          {
+            allGenres.map((g)=> <option value={g} key={g}>{g}</option>
+            )
+          }
+
         </select>
         <select
           className="p-2 border border-gray-300 rounded-md"
