@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { v4 as uuid } from 'uuid'
+import { useMovieData } from "../context";
 
 export default function AddMovieModal({ isOpen, onClose, onAddMovie }) {
+    const {
+        movieState: { allMovies },
+      } = useMovieData();
   const [movieDetails, setMovieDetails] = useState({
-    id: uuid(),
+    id: allMovies.length+1,
     title: "",
     year: "",
     genre: [],
