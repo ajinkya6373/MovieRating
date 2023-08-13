@@ -5,25 +5,32 @@ import { useMovieData } from "../context";
 export default function Card({ movie: { id, title, imageURL, summary } }) {
   const navigate = useNavigate();
   const {
-    movieState: {staredList, watchList },
+    movieState: { staredList, watchList },
     movieDispatch,
   } = useMovieData();
-  const handleStarUnstar = () => {
-    if (staredList.includes(id)) {
+  const isStarred = staredList.includes(id);
+  const isInWatchList = watchList.includes(id);
+  const handleStarUnstar = (e) => {
+    e.stopPropagation();
+    if (isStarred) {
       movieDispatch({ type: "UNSTAR", payload: id });
     } else {
       movieDispatch({ type: "STAR", payload: id });
     }
   };
 
-
+  const handleWatchListAction = (e) => {
+    e.stopPropagation();
+    if (isInWatchList) {
+      movieDispatch({ type: "REMOVE_FROM_WATCHLIST", payload: id });
+    } else {
+      movieDispatch({ type: "ADD_TO_WATCHLIST", payload: id });
+    }
+  };
 
   return (
     <div
-      className="flex flex-col items-center 
-      justify-between w-[300px] mx-auto rounded-md border border-solid border-black-2 align-middle
-      cursor-pointer
-      "
+      className="flex flex-col items-center justify-between w-[300px] mx-auto rounded-md border border-solid border-black-2 align-middle cursor-pointer hover:shadow-lg transition duration-300"
       onClick={() => navigate(`/movieDetail/${id}`)}
     >
       <img
@@ -36,12 +43,15 @@ export default function Card({ movie: { id, title, imageURL, summary } }) {
       <div className="flex space-x-4 p-4">
         <button
           className="bg-[#333233] hover:bg-gray-700 text-white px-4 py-2 rounded-md"
-          onClick={handleStarUnstar}
+          onClick={(e) => handleStarUnstar(e)}
         >
-          Star
+          {isStarred ? "Starred" : "Star"}
         </button>
-        <button className="bg-[#333233] hover:bg-gray-700 text-white px-4 py-2 rounded-md">
-          Add to WatchList
+        <button
+          className="bg-[#333233] hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+          onClick={(e) => handleWatchListAction(e)}
+        >
+          {isInWatchList ? "Remove from WatchList" : "Add to WatchList"}
         </button>
       </div>
     </div>

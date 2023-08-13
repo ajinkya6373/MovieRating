@@ -28,8 +28,6 @@ export default function movieReducer(state,action){
                 }
                 
             case "UNSTAR":
-                console.log(action.payload);
-                console.log(state.staredList);
                 return {
                     ...state,
                     staredList: state.staredList.filter((p)=>p !== action.payload)
